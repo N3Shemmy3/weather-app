@@ -15,11 +15,17 @@
 
     <h4 id="today-current-condition" class="text-lg">Cloudy</h4>
     <hr />
-    <h4 id="today-current-city" class="flex space-x-1 items-center text-lg">
+    <h4
+      id="today-current-city"
+      class="flex space-x-1 items-center text-base md:text-lg"
+    >
       <Icon name="ic:outline-calendar-month" size="24" />
       <span> Sunday 8, Dec</span>
     </h4>
-    <h4 id="today-current-city" class="flex space-x-1 items-center text-lg">
+    <h4
+      id="today-current-city"
+      class="flex space-x-1 items-center text-base md:text-lg"
+    >
       <Icon name="ic:outline-location-on" size="24" />
       <span> Lusaka, Zambia </span>
     </h4>
