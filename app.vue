@@ -22,7 +22,7 @@ const showSearchDialog = ref(false);
       class="w-full md:flex md:space-x-8 max-sm:space-y-8"
     >
       <!--Destop left-->
-      <div id="todays-specifics" class="md:w-[320px] space-y-4">
+      <div id="todays-specifics" class="w-full md:w-[320px] space-y-4">
         <!--Now Card section-->
 
         <NowCard />

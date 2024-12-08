@@ -1,7 +1,7 @@
 <script setup></script>
 <template>
   <section
-    class="aspect-square max-w-fit flex flex-col justify-center p-4 space-y-2 rounded-md border-[1.5px] dark:border-zinc-800 border-gray-200"
+    class="w-full h-fit aspect-square max-w-fit flex flex-col justify-center p-4 space-y-2 rounded-md border-[1.5px] dark:border-zinc-800 border-gray-200"
   >
     <h4 class="text-lg md:text-xl">Now</h4>
     <div class="w-full flex justify-between items-center">
