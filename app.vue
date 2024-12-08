@@ -75,4 +75,23 @@ const isLoading = ref(true);
     </div>
   </App>
 </template>
-<style src="./assets/css/tailwind.css" />
+<style>
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.grid-responsive {
+  grid-area: span;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+}
+.highlight {
+  @apply transition-colors duration-300 cursor-pointer hover:bg-colorPrimaryContainerLight dark:hover:bg-colorPrimaryContainerDark hover:bg-opacity-20 dark:hover:bg-opacity-20;
+}
+.borders {
+  @apply rounded-md border-[1.5px] dark:border-zinc-800 border-gray-200;
+}
+hr {
+  @apply border-[1.2px] rounded-full dark:border-zinc-800 border-gray-200;
+}
+</style>
