@@ -1,8 +1,4 @@
-<script>
-import IconButton from "../Button/IconButton.vue";
-import ForecastItem from "../Item/ForecastItem.vue";
-import SearchResultItem from "../Item/SearchResultItem.vue";
-</script>
+<script></script>
 
 <template>
   <!-- Dialog Overlay-->

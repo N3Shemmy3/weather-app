@@ -1,6 +1,4 @@
 <script setup>
-import MapCard from "./components/Card/MapCard.vue";
-
 useSeoMeta({
   title: "N3Shemmy3-Weather",
   ogTitle: "N3Shemmy3-Weather",
