@@ -6,11 +6,12 @@ const zoom = 8;
 const coordinates = [12.550343, 55.665957];
 
 // Set the initial style based on the current color mode
+const runtimeConfig = useRuntimeConfig();
 const setMapStyle = () => {
   style.value =
     colorMode === "dark"
-      ? "https://api.maptiler.com/maps/darkmatter/style.json?key=GnzC7mMaVT4VemViMTCQ" // Google-like dark theme
-      : "https://api.maptiler.com/maps/streets/style.json?key=GnzC7mMaVT4VemViMTCQ"; // Light theme
+      ? `https://api.maptiler.com/maps/darkmatter/style.json?key=${runtimeConfig.public.maptilerapikey}` // Google-like dark theme
+      : `https://api.maptiler.com/maps/streets/style.json?key=${runtimeConfig.public.maptilerapikey}}`; // Light theme
 };
 
 // Set the initial map style on mount

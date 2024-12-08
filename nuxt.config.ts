@@ -14,6 +14,12 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  runtimeConfig: {
+    public: {
+      weatherapikey: process.env.NUXT_WEATHERAPIKEY,
+      maptilerapikey: process.env.NUXT_MAPTILERKEY,
+    },
+  },
   app: {
     buildAssetsDir: "/app/",
     head: {
