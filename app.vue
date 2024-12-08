@@ -7,11 +7,6 @@ useSeoMeta({
 });
 const isLoading = ref(false);
 const showSearchDialog = ref(false);
-
-const style =
-  "https://api.maptiler.com/maps/streets/style.json?key=cQX2iET1gmOW38bedbUh";
-const center = [-1.559482, 47.21322];
-const zoom = 8;
 </script>
 
 <template>
@@ -29,17 +24,11 @@ const zoom = 8;
       <!--Destop left-->
       <div id="todays-specifics" class="md:w-[320px] space-y-4">
         <!--Now Card section-->
-        <section>
-          <NowCard />
-        </section>
+
+        <NowCard />
 
         <!-- Week forecast section-->
-        <section class="borders px-4 p-4 space-y-4">
-          <h4 class="text-lg">7-Day Forecast</h4>
-          <ul class="flex flex-col gap-2">
-            <LazyForecastItem v-for="n in 7" :key="n" />
-          </ul>
-        </section>
+        <WeekForecastCard />
       </div>
 
       <!--Destop right-->
@@ -47,30 +36,13 @@ const zoom = 8;
         id="todays-highlights"
         class="w-full space-y-4 borders p-4 *:space-y-4"
       >
-        <!-- Today's Highlights side -->
-
         <!-- Todays Specifics section-->
-        <section>
-          <h4 class="text-lg">Today's Highlights</h4>
-          <ul class="grid flex-col md:grid-cols-2 gap-4">
-            <LazySpecificsItem v-for="n in 4" :key="n" />
-          </ul>
-        </section>
+        <TodaysSpecificsCard />
 
         <!-- Today's Forecast section-->
-        <section>
-          <h4 class="text-lg">Today's Forecast</h4>
-          <ul class="w-full grid grid-responsive gap-4">
-            <DayForecastItem v-for="n in 5" :key="n" />
-          </ul>
-        </section>
+        <TodaysForecastCard />
         <!-- Location map section-->
-        <section>
-          <h4 class="text-lg">Forecast Location</h4>
-          <MglMap :map-style="style" :center="center" :zoom="zoom">
-            <MglNavigationControl />
-          </MglMap>
-        </section>
+        <MapCard />
       </div>
     </div>
     <!-- laoding screen -->
@@ -79,10 +51,14 @@ const zoom = 8;
 </template>
 <style>
 body {
+  @apply bg-colorBackgroundLight dark:bg-colorBackgroundDark text-colorOnBackgroundLight dark:text-colorOnBackgroundDark;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+section {
+  @apply w-full;
+}
 .grid-responsive {
   grid-area: span;
   grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
