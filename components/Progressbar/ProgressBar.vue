@@ -2,7 +2,7 @@
 const props = defineProps({
   size: {
     type: String,
-    default: 65, // Default size in pixels
+    default: "65", // Default size in pixels
   },
 });
 </script>
