@@ -1,5 +1,19 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
+  devtools: { enabled: true },
+  ssr: false,
+  modules: [
+    "@nuxt/icon",
+    "@nuxtjs/tailwindcss",
+    "nuxt-maplibre",
+    "@nuxtjs/color-mode",
+  ],
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false,
+    },
+  ],
   app: {
     buildAssetsDir: "/app/",
     head: {
@@ -12,13 +26,15 @@ export default defineNuxtConfig({
       ],
     },
   },
-  devtools: { enabled: true },
-  modules: ["@nuxt/icon", "@nuxtjs/tailwindcss", "nuxt-maplibre"],
-  components: [
-    {
-      path: "~/components",
-      pathPrefix: false,
-    },
-  ],
-  ssr: false,
+  colorMode: {
+    preference: "system", // default value of $colorMode.preference
+    fallback: "light", // fallback value if not system preference found
+    hid: "nuxt-color-mode-script",
+    globalName: "__NUXT_COLOR_MODE__",
+    componentName: "ColorScheme",
+    classPrefix: "",
+    classSuffix: "-mode",
+    storage: "localStorage", // or 'sessionStorage' or 'cookie'
+    storageKey: "nuxt-color-mode",
+  },
 });

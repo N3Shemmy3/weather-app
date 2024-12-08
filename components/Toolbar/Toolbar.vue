@@ -1,5 +1,18 @@
-<script>
-const { isDarkMode, toggleTheme } = useTheme();
+<script setup>
+const colorMode = useColorMode();
+const isDarkMode = ref(colorMode.value === "dark");
+
+const toggleMode = () => {
+  // Toggle between light and dark mode
+  if (colorMode.preference === "system") {
+    colorMode.preference = isDarkMode.value ? "light" : "dark";
+  } else {
+    colorMode.preference = "system";
+  }
+
+  // Toggle the isDarkMode state
+  isDarkMode.value = !isDarkMode.value;
+};
 </script>
 <template>
   <!--Toolbar header-->
@@ -27,9 +40,19 @@ const { isDarkMode, toggleTheme } = useTheme();
         <IconButton
           size="24"
           :icon="isDarkMode ? 'ic:outline-dark-mode' : 'ic:outline-light-mode'"
-          @click="toggleTheme"
+          @click="toggleMode"
+          class="theme-toggle-button"
         />
       </div>
     </div>
   </header>
 </template>
+<style scoped>
+.theme-toggle-button {
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.theme-toggle-button:active {
+  transform: rotate(360deg);
+}
+</style>
