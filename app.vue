@@ -23,7 +23,7 @@ useSeoMeta({
         <section class="borders px-4 py-2 md:p-4 space-y-4">
           <h4 class="text-lg">7-Day Forecast</h4>
           <ul class="flex flex-col gap-2">
-            <ForecastItem v-for="n in 7" />
+            <LazyForecastItem v-for="n in 7" :key="n" />
           </ul>
         </section>
       </div>
@@ -31,34 +31,38 @@ useSeoMeta({
       <!--Destop right-->
       <div
         id="todays-highlights"
-        class="w-full space-y-4 borders px-4 py-2 md:p-4"
+        class="w-full space-y-4 borders px-4 py-2 md:p-4 *:space-y-4"
       >
         <!-- Today's Highlights side -->
 
-        <!-- Todays Specifics -->
+        <!-- Todays Specifics section-->
         <section>
           <h4 class="text-lg">Today's Highlights</h4>
           <ul class="grid flex-col md:grid-cols-2 gap-4">
-            <SpecificsItem v-for="n in 4" />
+            <LazySpecificsItem v-for="n in 4" :key="n" />
           </ul>
-          <h4 class="text-lg">Today's Highlights</h4>
+        </section>
+
+        <!-- Today's Forecast section-->
+        <section>
+          <h4 class="text-lg">Today's Forecast</h4>
+          <ul class="w-full grid grid-responsive gap-4">
+            <li
+              v-for="n in 6"
+              :key="n"
+              class="w-fit px-4 py-2 flex flex-col text-center items-center space-y-2 borders highlight"
+            >
+              <Icon name="meteocons:clear-day-fill" size="36" />
+
+              <div>
+                <h4 class="text-base">23&deg;</h4>
+                <h4 class="text-base">3 PM</h4>
+              </div>
+            </li>
+          </ul>
         </section>
       </div>
     </div>
   </App>
 </template>
-<style>
-.borders {
-  @apply rounded-md border-[1.5px] dark:border-zinc-800 border-gray-200;
-}
-.highlight {
-  @apply transition-colors duration-300 cursor-pointer hover:bg-colorPrimaryContainerLight dark:hover:bg-colorPrimaryContainerDark hover:bg-opacity-20 dark:hover:bg-opacity-20;
-}
-hr {
-  @apply border-[1.2px] rounded-full dark:border-zinc-800 border-gray-200;
-}
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-</style>
+<style src="./assets/css/tailwind.css" />
