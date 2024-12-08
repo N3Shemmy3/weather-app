@@ -16,5 +16,8 @@
     "nuxt-maplibre": "^1.0.1",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.82.0"
   }
 }

@@ -1,3 +1,6 @@
+<script>
+const { isDarkMode, toggleTheme } = useTheme();
+</script>
 <template>
   <!--Toolbar header-->
   <header
@@ -21,7 +24,11 @@
       <div>
         <IconButton size="24" icon="ic:outline-search" />
         <IconButton size="24" icon="ic:outline-gps-fixed" />
-        <IconButton size="24" icon="ic:outline-dark-mode" />
+        <IconButton
+          size="24"
+          :icon="isDarkMode ? 'ic:outline-dark-mode' : 'ic:outline-light-mode'"
+          @click="toggleTheme"
+        />
       </div>
     </div>
   </header>
