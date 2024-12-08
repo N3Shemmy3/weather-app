@@ -20,7 +20,7 @@ const props = defineProps({
       cy="25"
       r="20"
       fill="none"
-      stroke="rgba(0, 0, 0, 0.1)"
+      stroke="rgba(1, 1, 1, 0.5)"
       stroke-width="4"
     ></circle>
     <!-- Animated spinning arc -->

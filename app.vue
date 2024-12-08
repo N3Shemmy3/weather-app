@@ -5,13 +5,18 @@ useSeoMeta({
   description: "NuxtJS weather app",
   ogDescription: "NuxtJS weather app.",
 });
-const isLoading = ref(true);
+const isLoading = ref(false);
+const showSearchDialog = ref(true);
 </script>
 
 <template>
   <App>
+    <!-- main app search dialog -->
+    <SearchDialog />
+    <!-- main app header -->
     <Toolbar />
 
+    <!-- main app -->
     <div
       v-show="!isLoading"
       class="w-full md:flex md:space-x-8 max-sm:space-y-8"
@@ -67,12 +72,8 @@ const isLoading = ref(true);
         </section>
       </div>
     </div>
-    <div
-      v-show="isLoading"
-      class="fixed left-0 top-0 right-0 bottom-0 z-[49] flex items-center justify-center"
-    >
-      <ProgressBar />
-    </div>
+    <!-- laoding screen -->
+    <Loader v-if="isLoading" />
   </App>
 </template>
 <style>
