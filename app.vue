@@ -6,13 +6,18 @@ useSeoMeta({
   ogDescription: "NuxtJS weather app.",
 });
 const isLoading = ref(false);
-const showSearchDialog = ref(true);
+const showSearchDialog = ref(false);
+
+const style =
+  "https://api.maptiler.com/maps/streets/style.json?key=cQX2iET1gmOW38bedbUh";
+const center = [-1.559482, 47.21322];
+const zoom = 8;
 </script>
 
 <template>
   <App>
     <!-- main app search dialog -->
-    <SearchDialog />
+    <SearchDialog v-if="showSearchDialog" />
     <!-- main app header -->
     <Toolbar />
 
@@ -56,19 +61,15 @@ const showSearchDialog = ref(true);
         <section>
           <h4 class="text-lg">Today's Forecast</h4>
           <ul class="w-full grid grid-responsive gap-4">
-            <li
-              v-for="n in 6"
-              :key="n"
-              class="w-full px-4 py-2 flex flex-col text-center items-center space-y-2 borders highlight"
-            >
-              <Icon name="meteocons:clear-day-fill" size="36" />
-
-              <div>
-                <h4 class="text-base">23&deg;</h4>
-                <h4 class="text-base">3 PM</h4>
-              </div>
-            </li>
+            <DayForecastItem v-for="n in 5" :key="n" />
           </ul>
+        </section>
+        <!-- Location map section-->
+        <section>
+          <h4 class="text-lg">Forecast Location</h4>
+          <MglMap :map-style="style" :center="center" :zoom="zoom">
+            <MglNavigationControl />
+          </MglMap>
         </section>
       </div>
     </div>

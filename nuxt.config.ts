@@ -13,11 +13,12 @@ export default defineNuxtConfig({
     },
   },
   devtools: { enabled: true },
-  modules: ["@nuxt/icon", "@nuxtjs/tailwindcss"],
+  modules: ["@nuxt/icon", "@nuxtjs/tailwindcss", "nuxt-maplibre"],
   components: [
     {
       path: "~/components",
       pathPrefix: false,
     },
   ],
+  ssr: false,
 });
