@@ -20,6 +20,7 @@
       <!--Items end-->
       <div>
         <IconButton size="24" icon="ic:outline-search" />
+        <IconButton size="24" icon="ic:outline-gps-fixed" />
         <IconButton size="24" icon="ic:outline-dark-mode" />
       </div>
     </div>
