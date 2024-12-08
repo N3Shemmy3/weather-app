@@ -5,13 +5,17 @@ useSeoMeta({
   description: "NuxtJS weather app",
   ogDescription: "NuxtJS weather app.",
 });
+const isLoading = ref(true);
 </script>
 
 <template>
   <App>
     <Toolbar />
 
-    <div class="w-full md:flex md:space-x-8 max-sm:space-y-8">
+    <div
+      v-show="!isLoading"
+      class="w-full md:flex md:space-x-8 max-sm:space-y-8"
+    >
       <!--Destop left-->
       <div id="todays-specifics" class="md:w-[320px] space-y-4">
         <!--Now Card section-->
@@ -20,7 +24,7 @@ useSeoMeta({
         </section>
 
         <!-- Week forecast section-->
-        <section class="borders px-4 py-2 md:p-4 space-y-4">
+        <section class="borders px-4 p-4 space-y-4">
           <h4 class="text-lg">7-Day Forecast</h4>
           <ul class="flex flex-col gap-2">
             <LazyForecastItem v-for="n in 7" :key="n" />
@@ -31,7 +35,7 @@ useSeoMeta({
       <!--Destop right-->
       <div
         id="todays-highlights"
-        class="w-full space-y-4 borders px-4 py-2 md:p-4 *:space-y-4"
+        class="w-full space-y-4 borders p-4 *:space-y-4"
       >
         <!-- Today's Highlights side -->
 
@@ -62,6 +66,12 @@ useSeoMeta({
           </ul>
         </section>
       </div>
+    </div>
+    <div
+      v-show="isLoading"
+      class="fixed left-0 top-0 right-0 bottom-0 z-[49] flex items-center justify-center"
+    >
+      <ProgressBar />
     </div>
   </App>
 </template>
