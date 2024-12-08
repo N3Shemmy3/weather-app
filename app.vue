@@ -21,7 +21,7 @@ const showSearchDialog = ref(false);
     <!-- main app -->
     <div
       v-show="!isLoading"
-      class="w-full md:flex md:space-x-8 max-sm:space-y-8"
+      class="w-full md:flex md:space-x-8 justify-between max-sm:space-y-8"
     >
       <!--Destop left-->
       <div id="todays-specifics" class="w-full md:w-[320px] space-y-4">
