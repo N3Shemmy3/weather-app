@@ -19,7 +19,7 @@ const showSearchDialog = ref(false);
     <!-- main app -->
     <div
       v-show="!isLoading"
-      class="w-full md:flex md:space-x-8 justify-between max-sm:space-y-8"
+      class="w-full md:flex md:space-x-8 max-sm:space-y-8"
     >
       <!--Destop left-->
       <div id="todays-specifics" class="w-full md:w-[320px] space-y-4">
@@ -32,10 +32,7 @@ const showSearchDialog = ref(false);
       </div>
 
       <!--Destop right-->
-      <div
-        id="todays-highlights"
-        class="w-full space-y-4 borders p-4 *:space-y-4"
-      >
+      <div id="todays-highlights" class="w-full borders">
         <!-- Todays Specifics section-->
         <TodaysSpecificsCard />
 
@@ -43,6 +40,8 @@ const showSearchDialog = ref(false);
         <TodaysForecastCard />
         <!-- Location map section-->
         <MapCard />
+        <!-- Footer-->
+        <Footer />
       </div>
     </div>
     <!-- laoding screen -->

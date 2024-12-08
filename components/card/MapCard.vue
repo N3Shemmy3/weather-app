@@ -25,7 +25,7 @@ watch(colorMode, (newColorMode) => {
 </script>
 
 <template>
-  <section class="w-full h-full">
+  <section class="w-full h-fit p-4 space-y-4">
     <h4 class="text-lg">Forecast Location</h4>
     <div class="w-full h-[350px] min-h-36 rounded-md overflow-clip">
       <MglMap :map-style="style" :center="center" :zoom="zoom">
