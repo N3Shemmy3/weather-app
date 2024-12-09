@@ -54,7 +54,7 @@ const toggleMode = () => {
 </template>
 <style scoped>
 .theme-toggle-button {
-  transition: transform 0.1s ease, opacity 0.1s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
 .theme-toggle-button:active {

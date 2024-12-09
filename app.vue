@@ -7,6 +7,8 @@ useSeoMeta({
 });
 const isLoading = ref(false);
 const showSearchDialog = ref(false);
+
+onMounted(() => {});
 </script>
 
 <template>

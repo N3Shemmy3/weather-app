@@ -8,11 +8,6 @@ const coordinates = ref([0, 0]);
 const style = ref(
   `https://api.maptiler.com/maps/streets/style.json?key=${runtimeConfig.public.maptilerapikey}}`
 );
-
-// Watch for color mode changes and update map style accordingly
-watch(colorMode, (newColorMode) => {
-  setMapStyle();
-});
 </script>
 
 <template>
