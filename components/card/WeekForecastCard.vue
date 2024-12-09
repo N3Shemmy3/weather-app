@@ -11,7 +11,7 @@ defineProps({
     <SkeletonText v-else />
     <ul class="flex flex-col gap-2">
       <DayForecastItem
-        v-if="week"
+        v-if="week[0] != undefined"
         v-for="day in week"
         :key="day.date"
         :day="day"

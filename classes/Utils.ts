@@ -76,6 +76,11 @@ export const formatHour = (time: any) => {
 };
 
 export const formatWeatherSpecifics = (weather: any) => {
+  if (!weather || !weather.current) {
+    // If 'weather' or 'weather.current' is not defined, return an empty array or handle appropriately
+    return [];
+  }
+
   const detailsMap = [
     {
       name: "Temperature",
@@ -109,6 +114,7 @@ export const formatWeatherSpecifics = (weather: any) => {
   // Filter out any details with undefined values and return the valid details
   return detailsMap.filter((item) => item.value !== undefined);
 };
+
 export const getGeolocation = () => {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {

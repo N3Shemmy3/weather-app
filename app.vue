@@ -10,6 +10,8 @@ useSeoMeta({
 
 const searchQuery = ref(""); // User input
 const forecast = ref({}); // Forecast data
+const weekForecast = ref([]); // week Forecast data
+const error = ref();
 const citySuggestions = ref([]); // City suggestions
 const isLoading = ref(false); // Loading state
 const showSearchDialog = ref(false);
@@ -54,6 +56,8 @@ const fetchCityWeather = async (city) => {
     console.error("Error fetching weather data:", error);
   } finally {
     isLoading.value = false;
+    fetchWeekWeather(forecast.value.forecast?.location?.name);
+    console.log(forecast.value.forecast.location);
   }
 };
 
@@ -68,9 +72,23 @@ const fetchWeatherByGps = async () => {
     );
     forecast.value = await response.json();
 
-    console.log("Weather data: ", weatherData);
+    console.log("Weather data: ", forecast.value);
   } catch (error) {
     console.error("Error fetching weather data: ", error.message);
+  }
+};
+const fetchWeekWeather = async (city) => {
+  if (!city) return;
+  isLoading.value = true;
+  try {
+    const response = await fetch(`/api/forecast?city=${city}&days=7`);
+    forecast.value = await response.json();
+    console.log(forecast.value);
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+  } finally {
+    isLoading.value = false;
+    fetchWeekWeather(forecast.value.forecast?.location?.name);
   }
 };
 
@@ -112,22 +130,24 @@ onMounted(() => {
       <div id="todays-specifics" class="w-full md:w-[320px] space-y-4">
         <!--Now Card section-->
 
-        <NowCard :forecast="forecast" />
+        <NowCard :forecast="forecast.forecast" />
 
         <!-- Week forecast section-->
-        <WeekForecastCard :week="forecast.forecast?.forecastday" />
+        <WeekForecastCard :week="weekForecast" />
       </div>
 
       <!--Destop right-->
       <div id="todays-highlights" class="w-full borders">
         <!-- Todays Specifics section-->
-        <TodaysSpecificsCard :specifics="formatWeatherSpecifics(forecast)" />
+        <TodaysSpecificsCard
+          :specifics="formatWeatherSpecifics(forecast.forecast)"
+        />
 
         <!-- Today's Forecast section-->
         <TodaysForecastCard :hours="forecast?.hourlyForecast?.[0] || []" />
 
         <!-- Location map section-->
-        <MapCard />
+        <MapCard :location="forecast.location" />
         <!-- Footer-->
         <Footer />
       </div>

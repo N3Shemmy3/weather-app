@@ -5,7 +5,7 @@ const runtimeConfig = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
   // Extract query parameters
-  const { city, lat, lon, days } = getQuery(event);
+  const { city, lat, lon, days = 7 } = getQuery(event);
 
   // Utility to fetch weather forecast by city name
   const fetchForecastByCity = async (
@@ -52,11 +52,15 @@ export default defineEventHandler(async (event) => {
         }
       );
 
-      // Combine hourly data with the rest of the forecast data
-      return { ...forecastData, hourlyForecast };
+      // Return the forecast data along with the hourly forecast
+      return { forecast: forecastData, hourlyForecast };
     } else if (lat && lon) {
       // Fetch weather data by coordinates (current weather, not hourly)
-      return await fetchWeatherByCoords(Number(lat), Number(lon));
+      const currentWeather = await fetchWeatherByCoords(
+        Number(lat),
+        Number(lon)
+      );
+      return { currentWeather };
     } else {
       throw new Error(
         "Either 'city' or 'lat' and 'lon' parameters are required."
