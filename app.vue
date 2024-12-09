@@ -1,32 +1,45 @@
 <script setup>
+import { formatWeatherSpecifics } from "./classes/Utils";
+
 useSeoMeta({
   title: "N3Shemmy3-Weather",
   ogTitle: "N3Shemmy3-Weather",
   description: "NuxtJS weather app",
   ogDescription: "NuxtJS weather app.",
 });
+
 const searchQuery = ref(""); // User input
-const forecast = ref(null); // Forecast data
+const forecast = ref({}); // Forecast data
 const citySuggestions = ref([]); // City suggestions
 const isLoading = ref(false); // Loading state
 const showSearchDialog = ref(false);
 const isSearching = ref(false);
+let debounceTimer = null; // To store the timer ID
 // Fetch city suggestions
 const fetchCitySuggestions = async () => {
   if (!searchQuery.value.trim()) {
     citySuggestions.value = [];
     return;
   }
+
   isSearching.value = true;
-  try {
-    const response = await fetch(`/api/search?query=${searchQuery.value}`);
-    const data = await response.json();
-    citySuggestions.value = data.cities || [];
-    console.log(citySuggestions.value);
-  } catch (error) {
-    console.error("Error fetching city suggestions:", error);
+
+  // Clear the previous debounce timer if it exists
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
   }
-  isSearching.value = false;
+
+  // Set a new debounce timer
+  debounceTimer = setTimeout(async () => {
+    try {
+      const response = await fetch(`/api/search?query=${searchQuery.value}`);
+      const data = await response.json();
+      citySuggestions.value = data.cities || [];
+    } catch (error) {
+      console.error("Error fetching city suggestions:", error);
+    }
+    isSearching.value = false;
+  }, 300); // Delay in ms (300ms)
 };
 
 // Fetch weather forecast
@@ -36,6 +49,7 @@ const fetchCityWeather = async (city) => {
   try {
     const response = await fetch(`/api/weather?city=${city}`);
     forecast.value = await response.json();
+    console.log(forecast.value);
   } catch (error) {
     console.error("Error fetching weather data:", error);
   } finally {
@@ -58,6 +72,12 @@ const fetchCityWeather = async (city) => {
       "
       :isSearching="isSearching"
       :results="citySuggestions"
+      @onResultClicked="
+        (result) => {
+          fetchCityWeather(result.name);
+          showSearchDialog = false;
+        }
+      "
     />
     <!-- main app header -->
     <Toolbar @onSearchItemClick="showSearchDialog = !showSearchDialog" />
@@ -71,16 +91,16 @@ const fetchCityWeather = async (city) => {
       <div id="todays-specifics" class="w-full md:w-[320px] space-y-4">
         <!--Now Card section-->
 
-        <NowCard />
+        <NowCard :forecast="forecast" />
 
         <!-- Week forecast section-->
-        <WeekForecastCard />
+        <WeekForecastCard :week="forecast.forecastday" />
       </div>
 
       <!--Destop right-->
       <div id="todays-highlights" class="w-full borders">
         <!-- Todays Specifics section-->
-        <TodaysSpecificsCard />
+        <TodaysSpecificsCard :specifics="formatWeatherSpecifics(forecast)" />
 
         <!-- Today's Forecast section-->
         <TodaysForecastCard />

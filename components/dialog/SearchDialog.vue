@@ -14,6 +14,9 @@ defineProps({
 const toggleOverlay = (event) => {
   if (event.target.id == "overlay") emit("onOverlayClicked");
 };
+const onResultClicked = (result) => {
+  emit("onResultClicked", result);
+};
 
 const query = ref("");
 </script>
@@ -63,6 +66,7 @@ const query = ref("");
             v-for="result in results"
             :key="result.id"
             :result="result"
+            @click="onResultClicked(result)"
           />
         </TransitionGroup>
       </div>

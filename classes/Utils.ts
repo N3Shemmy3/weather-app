@@ -1,3 +1,6 @@
+import { parse } from "date-fns";
+import { format } from "date-fns";
+
 // Array of weather conditions mapped to Meteocons icons
 export const weatherToMeteocon: WeatherCondition[] = [
   { condition: "sunny", icon: "meteocons:clear-day-fill" },
@@ -7,6 +10,7 @@ export const weatherToMeteocon: WeatherCondition[] = [
   { condition: "overcast", icon: "meteocons:overcast-fill" },
   { condition: "mist", icon: "meteocons:mist-fill" },
   { condition: "patchy rain possible", icon: "meteocons:drizzle-fill" },
+  { condition: "patchy rain nearby", icon: "meteocons:drizzle-fill" },
   { condition: "light rain", icon: "meteocons:rain-fill" },
   { condition: "heavy rain", icon: "meteocons:extreme-rain-fill" },
   { condition: "thunderstorm", icon: "meteocons:thunderstorms-fill" },
@@ -51,4 +55,51 @@ export const getMeteoconIcon = (
 
   // Return the matched icon or a default if not found
   return weatherToMeteoconMap.get(trimmedCondition) || "meteocons:code-green";
+};
+
+export const formatDate = (localTime: string): string => {
+  try {
+    // Parse the local time string into a Date object
+    const parsedDate = parse(localTime, "yyyy-MM-dd HH:mm", new Date());
+
+    // Return the formatted date as '9 December'
+    return format(parsedDate, "d MMMM");
+  } catch (error) {
+    console.error("Error formatting date:", error);
+    return ""; // Return empty string in case of error
+  }
+};
+export const formatWeatherSpecifics = (weather: any) => {
+  const detailsMap = [
+    {
+      name: "Temperature",
+      value: weather.current?.temp_c
+        ? `${weather.current.temp_c}°C`
+        : undefined,
+      icon: "meteocons:thermometer-mercury",
+    },
+    {
+      name: "Humidity",
+      value:
+        weather.current?.humidity !== undefined
+          ? `${weather.current.humidity}%`
+          : undefined,
+      icon: "meteocons:humidity-fill",
+    },
+    {
+      name: "Wind Speed",
+      value: weather.current?.wind_kph
+        ? `${weather.current.wind_kph} kph`
+        : undefined,
+      icon: "meteocons:wind-fill",
+    },
+    {
+      name: "UV Index",
+      value: weather.current?.uv !== undefined ? weather.current.uv : undefined,
+      icon: "meteocons:uv-index",
+    },
+  ];
+
+  // Filter out any details with undefined values and return the valid details
+  return detailsMap.filter((item) => item.value !== undefined);
 };
