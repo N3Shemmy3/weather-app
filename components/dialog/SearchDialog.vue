@@ -11,10 +11,9 @@ defineProps({
     type: Boolean,
   },
 });
-function toggleOverlay(event) {
-  if (event.id == "overlay") emit("onOverlayClicked");
-  console.log(event.id);
-}
+const toggleOverlay = (event) => {
+  if (event.target.id == "overlay") emit("onOverlayClicked");
+};
 
 const query = ref("");
 </script>
@@ -30,13 +29,12 @@ const query = ref("");
     >
       <!-- Searchbox -->
       <div
-        id="Searchbox"
-        class="inner h-fit md:w-full md:max-w-xl mx-4 my-14 md:mx-auto md:my-24 2xl:m-auto flex flex-col rounded-md overflow-clip divide-y-[1.5px] dark:divide-zinc-800 divide-gray-200 bg-colorSurfaceLight dark:bg-colorSurfaceDark"
+        class="inner h-fit md:w-full md:max-w-xl mx-4 my-14 overflow-x-hidden md:mx-auto md:my-24 2xl:m-auto flex flex-col rounded-md overflow-clip divide-y-[1.5px] dark:divide-zinc-800 divide-gray-200 bg-colorSurfaceLight dark:bg-colorSurfaceDark"
       >
         <!-- Searchbox header-->
         <div
           id="searchbox"
-          class="w-full min-h-14 px-2 flex items-center space-x-4 text-base transition-all duration-300"
+          class="w-full min-h-14 px-2 flex items-center text-base transition-all duration-300"
         >
           <IconButton icon="ic:outline-search" class="opacity-80" />
 
@@ -54,14 +52,18 @@ const query = ref("");
           />
           <ProgressBar v-if="isSearching" size="28" />
         </div>
-        <TransitionGroup name="list" tag="ul">
-          <ul id="results" class="w-full overflow-y-auto flex flex-col gap-1">
-            <SearchResultItem
-              v-for="result in results"
-              :key="result.id"
-              :result="result"
-            />
-          </ul>
+
+        <TransitionGroup
+          name="list"
+          tag="ul"
+          id="results"
+          class="w-full overflow-y-auto overflow-x-hidden flex flex-col gap-1"
+        >
+          <SearchResultItem
+            v-for="result in results"
+            :key="result.id"
+            :result="result"
+          />
         </TransitionGroup>
       </div>
     </div>
@@ -83,13 +85,21 @@ const query = ref("");
   transform: translateY(100%) translateZ(0);
   opacity: 0;
 }
+.list-move, /* apply transition to moving elements */
 .list-enter-active,
 .list-leave-active {
   transition: all 0.5s ease;
 }
+
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: relative;
 }
 </style>

@@ -13,7 +13,6 @@ const showSearchDialog = ref(false);
 const isSearching = ref(false);
 // Fetch city suggestions
 const fetchCitySuggestions = async () => {
-  if (searchQuery.value.length < 3) return;
   if (!searchQuery.value.trim()) {
     citySuggestions.value = [];
     return;
