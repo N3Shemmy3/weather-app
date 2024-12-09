@@ -18,16 +18,13 @@ const props = defineProps({
 
     <Icon
       :name="
-        getMeteoconIcon(
-          props.day.current.condition.text,
-          props.day.current.is_Day
-        )
+        getMeteoconIcon(props.day.day.condition.text, props.day.day.is_Day)
       "
       size="32"
     />
 
     <!-- Temperature -->
-    <h4 class="text-2xl">{{ day.avgtemp_c }}&deg;</h4>
+    <h4 class="text-2xl">{{ props.day.day.avgtemp_c }}&deg;</h4>
 
     <!-- Date and Day -->
     <div>

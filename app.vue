@@ -1,5 +1,5 @@
 <script setup>
-import { formatWeatherSpecifics } from "./classes/Utils";
+import { formatWeatherSpecifics, getGeolocation } from "./classes/Utils";
 
 useSeoMeta({
   title: "N3Shemmy3-Weather",
@@ -47,7 +47,7 @@ const fetchCityWeather = async (city) => {
   if (!city) return;
   isLoading.value = true;
   try {
-    const response = await fetch(`/api/weather?city=${city}`);
+    const response = await fetch(`/api/weather?city=${city}&days=7`);
     forecast.value = await response.json();
     console.log(forecast.value);
   } catch (error) {
@@ -56,6 +56,27 @@ const fetchCityWeather = async (city) => {
     isLoading.value = false;
   }
 };
+
+const fetchWeatherByGps = async () => {
+  try {
+    // Get geolocation coordinates (latitude and longitude)
+    const { latitude, longitude } = await getGeolocation();
+
+    // Fetch weather data by coordinates
+    const response = await fetch(
+      `/api/weather?lat=${latitude}&=${longitude}&days=7`
+    );
+    forecast.value = await response.json();
+
+    console.log("Weather data: ", weatherData);
+  } catch (error) {
+    console.error("Error fetching weather data: ", error.message);
+  }
+};
+
+onMounted(() => {
+  fetchWeatherByGps();
+});
 </script>
 
 <template>
@@ -94,7 +115,7 @@ const fetchCityWeather = async (city) => {
         <NowCard :forecast="forecast" />
 
         <!-- Week forecast section-->
-        <WeekForecastCard :week="forecast.forecastday" />
+        <WeekForecastCard :week="forecast.forecast?.forecastday" />
       </div>
 
       <!--Destop right-->

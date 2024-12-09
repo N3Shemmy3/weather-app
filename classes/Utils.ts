@@ -9,7 +9,7 @@ export const weatherToMeteocon: WeatherCondition[] = [
   { condition: "overcast", icon: "meteocons:overcast-fill" },
   { condition: "mist", icon: "meteocons:mist-fill" },
   { condition: "patchy rain possible", icon: "meteocons:drizzle-fill" },
-  { condition: "patchy rain nearby", icon: "meteocons:drizzle-fill" },
+  { condition: "patchy rain nearby", icon: "meteocons:drizzle-fill" }, // Ensure this is included
   { condition: "light rain", icon: "meteocons:rain-fill" },
   { condition: "heavy rain", icon: "meteocons:extreme-rain-fill" },
   { condition: "thunderstorm", icon: "meteocons:thunderstorms-fill" },
@@ -108,4 +108,21 @@ export const formatWeatherSpecifics = (weather: any) => {
 
   // Filter out any details with undefined values and return the valid details
   return detailsMap.filter((item) => item.value !== undefined);
+};
+export const getGeolocation = () => {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          resolve({ latitude, longitude });
+        },
+        (error) => {
+          reject(new Error("Failed to get location: " + error.message));
+        }
+      );
+    } else {
+      reject(new Error("Geolocation is not supported by this browser."));
+    }
+  });
 };

@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
   week: {
-    type: [],
+    type: Array,
   },
 });
 </script>
