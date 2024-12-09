@@ -13,3 +13,7 @@ export const weatherEndPoints = {
   ipLookup: "/v1/ip.json",
   airQuality: "/v1/airquality.json",
 };
+export const formattedDate = (rawDate: string) => {
+  const date = new Date(rawDate);
+  return date.toLocaleDateString("en-US", { day: "numeric", month: "short" });
+};

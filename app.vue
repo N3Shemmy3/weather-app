@@ -65,10 +65,16 @@ section {
 .highlight {
   @apply transition-colors duration-300 cursor-pointer hover:bg-colorPrimaryContainerLight dark:hover:bg-colorPrimaryContainerDark hover:bg-opacity-20 dark:hover:bg-opacity-20;
 }
+/** add pulse animation to skeletons */
+
+.pulse {
+  @apply animate-pulse bg-colorPrimaryLight dark:bg-colorPrimaryDark bg-opacity-40 dark:bg-opacity-20;
+}
+
 .borders {
-  @apply rounded-md border-[1.5px] dark:border-zinc-800 border-gray-200;
+  @apply rounded-md border-[1.5px] dark:border-colorPrimaryDark border-colorPrimaryLight border-opacity-30 dark:border-opacity-30;
 }
 hr {
-  @apply border-[1.2px] rounded-full dark:border-zinc-800 border-gray-200;
+  @apply border-[1.2px] rounded-full dark:border-colorPrimaryDark border-colorPrimaryLight border-opacity-30 dark:border-opacity-30;
 }
 </style>

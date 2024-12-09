@@ -1,23 +1,13 @@
 <script setup>
 const { value: colorMode } = useColorMode();
-const style = ref("");
-const center = [12.550343, 55.665957];
-const zoom = 8;
-const coordinates = [12.550343, 55.665957];
 
 // Set the initial style based on the current color mode
 const runtimeConfig = useRuntimeConfig();
-const setMapStyle = () => {
-  style.value =
-    colorMode === "dark"
-      ? `https://api.maptiler.com/maps/darkmatter/style.json?key=${runtimeConfig.public.maptilerapikey}` // Google-like dark theme
-      : `https://api.maptiler.com/maps/streets/style.json?key=${runtimeConfig.public.maptilerapikey}}`; // Light theme
-};
-
-// Set the initial map style on mount
-onMounted(() => {
-  setMapStyle();
-});
+const zoom = 8;
+const coordinates = ref([0, 0]);
+const style = ref(
+  `https://api.maptiler.com/maps/streets/style.json?key=${runtimeConfig.public.maptilerapikey}}`
+);
 
 // Watch for color mode changes and update map style accordingly
 watch(colorMode, (newColorMode) => {
@@ -28,12 +18,16 @@ watch(colorMode, (newColorMode) => {
 <template>
   <section class="w-full h-fit p-4 space-y-4">
     <h4 class="text-lg">Forecast Location</h4>
-    <div class="w-full h-[350px] min-h-36 rounded-md overflow-clip">
-      <MglMap :map-style="style" :center="center" :zoom="zoom">
+    <div
+      v-if="coordinates[0] + coordinates[0] != 0"
+      class="w-full h-[350px] min-h-36 rounded-md overflow-clip"
+    >
+      <MglMap :map-style="style" :center="coordinates" :zoom="zoom">
         <MglNavigationControl />
         <mgl-marker :coordinates="coordinates" color="#cc0000" />
       </MglMap>
     </div>
+    <SkeletonMapCard v-else />
   </section>
 </template>
 

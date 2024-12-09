@@ -1,7 +1,7 @@
 <script setup></script>
 <template>
   <section
-    class="w-full h-fit flex flex-col justify-center p-4 space-y-2 rounded-md border-[1.5px] dark:border-zinc-800 border-gray-200"
+    class="w-full aspect-square h-fit flex flex-col justify-center p-4 space-y-2 rounded-md borders"
   >
     <h4 class="text-lg md:text-xl">Now</h4>
 

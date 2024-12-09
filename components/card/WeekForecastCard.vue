@@ -1,31 +1,8 @@
 <script setup>
-const city = ref("London");
-const forecast = ref(null);
-const loading = ref(false);
-const error = ref(null);
-
-const fetchWeather = async () => {
-  loading.value = true;
-  error.value = null;
-
-  try {
-    const response = await fetch(`/api/weather?city=${city.value}&days=7`);
-    const data = await response.json();
-
-    if (data.error) {
-      throw new Error(data.error);
-    }
-
-    forecast.value = data;
-  } catch (err) {
-    error.value = err.message || "Failed to fetch weather data.";
-  } finally {
-    loading.value = false;
-  }
-};
-
-onMounted(() => {
-  fetchWeather();
+defineProps({
+  week: {
+    type: [],
+  },
 });
 </script>
 <template>
@@ -33,10 +10,13 @@ onMounted(() => {
     <h4 class="text-lg">7-Day Forecast</h4>
     <ul class="flex flex-col gap-2">
       <DayForecastItem
-        v-for="(day, index) in forecast.forecastday"
-        :key="index"
+        v-if="week"
+        v-for="day in week"
+        :key="day.date"
         :day="day"
       />
+
+      <SkeletonListItem v-else v-for="n in 7" :key="n" />
     </ul>
   </section>
 </template>

@@ -17,7 +17,7 @@ const toggleMode = () => {
 <template>
   <!--Toolbar header-->
   <header
-    class="fixed left-0 top-0 right-0 z-50 w-full flex backdrop-filter bg-opacity-40 dark:bg-opacity-80 border-b-[1.5px] bg-colorSurfaceLight dark:bg-colorSurfaceDark dark:border-zinc-800 border-gray-200 firefox:bg-opacity-90 backdrop-blur-lg text-colorOnSurfaceLight dark:text-colorOnSurfaceDark"
+    class="fixed left-0 top-0 right-0 z-50 w-full flex backdrop-filter bg-opacity-40 dark:bg-opacity-80 border-b-[1.5px] bg-colorSurfaceLight dark:bg-colorSurfaceDark dark:border-colorPrimaryDark border-colorPrimaryLight border-opacity-30 dark:border-opacity-30 firefox:bg-opacity-90 backdrop-blur-lg text-colorOnSurfaceLight dark:text-colorOnSurfaceDark"
   >
     <!--div that spaces it-->
     <div
