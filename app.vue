@@ -12,7 +12,15 @@ const showSearchDialog = ref(false);
 <template>
   <App>
     <!-- main app search dialog -->
-    <SearchDialog v-if="showSearchDialog" />
+    <SearchDialog
+      v-if="showSearchDialog"
+      @onOverlayClicked="showSearchDialog = !showSearchDialog"
+      @onQueryChanged="
+        (query) => {
+          console.log(query);
+        }
+      "
+    />
     <!-- main app header -->
     <Toolbar @onSearchItemClick="showSearchDialog = !showSearchDialog" />
 
