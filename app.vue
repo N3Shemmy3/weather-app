@@ -5,23 +5,60 @@ useSeoMeta({
   description: "NuxtJS weather app",
   ogDescription: "NuxtJS weather app.",
 });
-const isLoading = ref(false);
+const searchQuery = ref(""); // User input
+const forecast = ref(null); // Forecast data
+const citySuggestions = ref([]); // City suggestions
+const isLoading = ref(false); // Loading state
 const showSearchDialog = ref(false);
+const isSearching = ref(false);
+// Fetch city suggestions
+const fetchCitySuggestions = async () => {
+  if (searchQuery.value.length < 3) return;
+  if (!searchQuery.value.trim()) {
+    citySuggestions.value = [];
+    return;
+  }
+  isSearching.value = true;
+  try {
+    const response = await fetch(`/api/search?query=${searchQuery.value}`);
+    const data = await response.json();
+    citySuggestions.value = data.cities || [];
+    console.log(citySuggestions.value);
+  } catch (error) {
+    console.error("Error fetching city suggestions:", error);
+  }
+  isSearching.value = false;
+};
 
-onMounted(() => {});
+// Fetch weather forecast
+const fetchCityWeather = async (city) => {
+  if (!city) return;
+  isLoading.value = true;
+  try {
+    const response = await fetch(`/api/weather?city=${city}`);
+    forecast.value = await response.json();
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
 
 <template>
   <App>
     <!-- main app search dialog -->
     <SearchDialog
-      v-if="showSearchDialog"
+      :showDialog="showSearchDialog"
       @onOverlayClicked="showSearchDialog = !showSearchDialog"
       @onQueryChanged="
         (query) => {
-          console.log(query);
+          searchQuery = query;
+          fetchCitySuggestions();
         }
       "
+      :isSearching="isSearching"
+      :results="citySuggestions"
     />
     <!-- main app header -->
     <Toolbar @onSearchItemClick="showSearchDialog = !showSearchDialog" />
