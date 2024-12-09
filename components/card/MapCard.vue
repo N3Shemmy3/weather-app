@@ -17,7 +17,10 @@ watch(colorMode, (newColorMode) => {
 
 <template>
   <section class="w-full h-fit p-4 space-y-4">
-    <h4 class="text-lg">Forecast Location</h4>
+    <h4 v-if="coordinates[0] + coordinates[0] != 0" class="text-lg">
+      Forecast Location
+    </h4>
+    <SkeletonText v-else />
     <div
       v-if="coordinates[0] + coordinates[0] != 0"
       class="w-full h-[350px] min-h-36 rounded-md overflow-clip"

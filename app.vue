@@ -14,7 +14,7 @@ const showSearchDialog = ref(false);
     <!-- main app search dialog -->
     <SearchDialog v-if="showSearchDialog" />
     <!-- main app header -->
-    <Toolbar />
+    <Toolbar @onSearchItemClick="showSearchDialog = !showSearchDialog" />
 
     <!-- main app -->
     <div
