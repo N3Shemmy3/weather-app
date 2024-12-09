@@ -103,7 +103,8 @@ const fetchCityWeather = async (city) => {
         <TodaysSpecificsCard :specifics="formatWeatherSpecifics(forecast)" />
 
         <!-- Today's Forecast section-->
-        <TodaysForecastCard :hours="forecast." />
+        <TodaysForecastCard :hours="forecast?.hourlyForecast?.[0] || []" />
+
         <!-- Location map section-->
         <MapCard />
         <!-- Footer-->

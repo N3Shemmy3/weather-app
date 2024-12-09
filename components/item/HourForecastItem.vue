@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <li
     class="w-full px-4 py-2 flex flex-col text-center items-center space-y-2 borders highlight"
