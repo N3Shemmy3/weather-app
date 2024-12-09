@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
   specifics: {
-    type: [],
+    type: Array,
   },
 });
 </script>

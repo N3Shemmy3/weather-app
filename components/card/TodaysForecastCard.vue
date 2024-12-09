@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
   hours: {
-    type: [],
+    type: Array,
   },
 });
 </script>
@@ -11,7 +11,12 @@ defineProps({
     <h4 v-if="hours" class="text-lg">Today's Forecast</h4>
     <SkeletonText v-else />
     <ul class="w-full grid grid-responsive gap-4">
-      <HourForecastItem v-if="hours[0]" v-for="hour in hours" :key="n" />
+      <HourForecastItem
+        v-if="hours[0]"
+        v-for="hour in hours"
+        :key="hour.time"
+        :hour="hour"
+      />
       <SkeletonListItem class="h-24" v-else v-for="n in 4" />
     </ul>
   </section>

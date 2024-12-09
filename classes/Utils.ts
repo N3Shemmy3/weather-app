@@ -1,5 +1,4 @@
-import { parse } from "date-fns";
-import { format } from "date-fns";
+import { parse, format } from "date-fns";
 
 // Array of weather conditions mapped to Meteocons icons
 export const weatherToMeteocon: WeatherCondition[] = [
@@ -69,6 +68,13 @@ export const formatDate = (localTime: string): string => {
     return ""; // Return empty string in case of error
   }
 };
+
+export const formatHour = (time: any) => {
+  if (!time) return "";
+  const parsedTime = parse(time, "yyyy-MM-dd HH:mm", new Date());
+  return format(parsedTime, "h a"); // Formats time to "2 PM"
+};
+
 export const formatWeatherSpecifics = (weather: any) => {
   const detailsMap = [
     {
