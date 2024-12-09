@@ -1,27 +1,3 @@
-import { ref } from "vue";
-
-// Base URL for Weather API
-export const weatherApiBaseUrl = "http://api.weatherapi.com";
-
-// Endpoints for various Weather API functionalities
-export const weatherEndPoints = {
-  current: "/v1/current.json",
-  forecast: "/v1/forecast.json",
-  search: "/v1/search.json",
-  history: "/v1/history.json",
-  astronomy: "/v1/astronomy.json",
-  timeZone: "/v1/timezone.json",
-  sports: "/v1/sports.json",
-  ipLookup: "/v1/ip.json",
-  airQuality: "/v1/airquality.json",
-};
-
-// TypeScript type for weather condition mappings
-type WeatherCondition = {
-  condition: string;
-  icon: string;
-};
-
 // Array of weather conditions mapped to Meteocons icons
 export const weatherToMeteocon: WeatherCondition[] = [
   { condition: "sunny", icon: "meteocons:clear-day-fill" },

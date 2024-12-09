@@ -1,4 +1,4 @@
-import { weatherApiBaseUrl, weatherEndPoints } from "~/classes/constants";
+import { weatherApiBaseUrl, weatherEndPoints } from "~/classes/WeatherApi";
 import { getQuery } from "h3";
 
 const runtimeConfig = useRuntimeConfig();
