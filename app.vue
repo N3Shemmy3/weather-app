@@ -17,6 +17,7 @@ const isLoading = ref(false); // Loading state
 const showSearchDialog = ref(false);
 const isSearching = ref(false);
 let debounceTimer = null; // To store the timer ID
+const runtimeConfig = useRuntimeConfig();
 // Fetch city suggestions
 const fetchCitySuggestions = async () => {
   // Validate search query
@@ -35,7 +36,6 @@ const fetchCitySuggestions = async () => {
   // Set a new debounce timer for delayed fetching
   debounceTimer = setTimeout(async () => {
     try {
-      const runtimeConfig = useRuntimeConfig();
       const url = new URL(weatherApiBaseUrl + weatherEndPoints.search);
       url.searchParams.append("key", runtimeConfig.public.weatherapikey);
       url.searchParams.append("q", searchQuery.value);
@@ -43,7 +43,7 @@ const fetchCitySuggestions = async () => {
       const response = await fetch(url.toString());
 
       if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
+        console.log(`HTTP Error: ${response.status} - ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -66,9 +66,7 @@ const fetchCityWeather = async (city, days = 7) => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(
-        `HTTP Error: ${response.status} - ${response.statusText}`
-      );
+      console.log(`HTTP Error: ${response.status} - ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -76,6 +74,7 @@ const fetchCityWeather = async (city, days = 7) => {
     // console.log(forecast.value); // Log the forecast data for debugging
   } catch (err) {
     error.value = err.message;
+    console.log(error.value);
   } finally {
     isLoading.value = false;
   }
@@ -88,15 +87,14 @@ const fetchWeatherByCoords = async (lat, lon, days = 7) => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      throw new Error(
-        `HTTP Error: ${response.status} - ${response.statusText}`
-      );
+      console.log(`HTTP Error: ${response.status} - ${response.statusText}`);
     }
 
     const data = await response.json();
     forecast.value = data; // Assign the parsed data
   } catch (err) {
     error.value = err.message;
+    console.log(error.value);
   } finally {
     isLoading.value = false;
   }
