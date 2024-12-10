@@ -103,6 +103,17 @@ const fetchGps = () => {
 onMounted(() => {
   fetchGps();
 });
+const fetchData = () => {
+  if (searchQuery.value) fetchCityWeather(searchQuery.value, 7);
+  else fetchGps();
+};
+// Add event listeners
+window.addEventListener("online", fetchData);
+
+// Cleanup listeners when the component is destroyed
+onUnmounted(() => {
+  window.removeEventListener("online", fetchData);
+});
 </script>
 
 <template>
