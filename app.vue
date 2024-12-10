@@ -1,4 +1,5 @@
 <script setup>
+import { weatherApiBaseUrl, weatherEndPoints } from "~/classes/WeatherApi";
 import { formatWeatherSpecifics } from "./classes/Utils";
 
 useSeoMeta({
@@ -18,10 +19,12 @@ const isSearching = ref(false);
 let debounceTimer = null; // To store the timer ID
 // Fetch city suggestions
 const fetchCitySuggestions = async () => {
+  // Validate search query
   if (!searchQuery.value.trim()) {
     citySuggestions.value = [];
     return;
   }
+
   isSearching.value = true;
 
   // Clear the previous debounce timer if it exists
@@ -29,54 +32,69 @@ const fetchCitySuggestions = async () => {
     clearTimeout(debounceTimer);
   }
 
-  // Set a new debounce timer
+  // Set a new debounce timer for delayed fetching
   debounceTimer = setTimeout(async () => {
     try {
-      const response = await fetch(`/api/search?query=${searchQuery.value}`);
+      const runtimeConfig = useRuntimeConfig();
+      const url = new URL(weatherApiBaseUrl + weatherEndPoints.search);
+      url.searchParams.append("key", runtimeConfig.public.weatherapikey);
+      url.searchParams.append("q", searchQuery.value);
+
+      const response = await fetch(url.toString());
+
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+
       const data = await response.json();
-      citySuggestions.value = data.cities || [];
+      citySuggestions.value = data || [];
     } catch (error) {
       console.error("Error fetching city suggestions:", error);
+      citySuggestions.value = [];
+    } finally {
+      isSearching.value = false;
     }
-    isSearching.value = false;
   }, 300); // Delay in ms (300ms)
 };
 
-// Fetch weather forecast
 const fetchCityWeather = async (city, days = 7) => {
-  // Default to 7 days
   if (!city) return;
-
   isLoading.value = true;
   try {
-    const response = await fetch(`/api/forecast?city=${city}`);
-    const data = await response.json();
+    // Construct the URL for the weather API
+    const url = `${weatherApiBaseUrl}${weatherEndPoints.forecast}?key=${runtimeConfig.public.weatherapikey}&q=${city}&days=${days}`;
+    const response = await fetch(url);
 
-    if (response.ok) {
-      forecast.value = data; // Assign the parsed data
-      console.log(forecast.value);
-    } else {
-      throw new Error(data.message || "Failed to fetch weather data");
+    if (!response.ok) {
+      throw new Error(
+        `HTTP Error: ${response.status} - ${response.statusText}`
+      );
     }
+
+    const data = await response.json();
+    forecast.value = data; // Assign the parsed data
+    console.log(forecast.value); // Log the forecast data for debugging
   } catch (err) {
     error.value = err.message;
   } finally {
     isLoading.value = false;
   }
 };
-const fetchCityWeatherGps = async (lat, lon, days = 7) => {
+
+const fetchWeatherByCoords = async (lat, lon, days = 7) => {
   isLoading.value = true;
   try {
-    const response = await fetch(
-      `/api/forecast?lat=${lat}&lon=${lon}&days=${days}`
-    );
-    const data = await response.json();
+    const url = `${weatherApiBaseUrl}${weatherEndPoints.forecast}?key=${runtimeConfig.public.weatherapikey}&q=${lat},${lon}&days=${days}`;
+    const response = await fetch(url);
 
-    if (response.ok) {
-      forecast.value = data; // Assign the parsed data
-    } else {
-      throw new Error(data.message || "Failed to fetch weather data");
+    if (!response.ok) {
+      throw new Error(
+        `HTTP Error: ${response.status} - ${response.statusText}`
+      );
     }
+
+    const data = await response.json();
+    forecast.value = data; // Assign the parsed data
   } catch (err) {
     error.value = err.message;
   } finally {
@@ -89,7 +107,7 @@ const fetchGps = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        fetchCityWeatherGps(latitude, longitude, 7);
+        fetchWeatherByCoords(latitude, longitude, 7);
         console.log(latitude, longitude);
       },
       (error) => {
