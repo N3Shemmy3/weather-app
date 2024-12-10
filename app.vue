@@ -73,7 +73,7 @@ const fetchCityWeather = async (city, days = 7) => {
 
     const data = await response.json();
     forecast.value = data; // Assign the parsed data
-    console.log(forecast.value); // Log the forecast data for debugging
+    // console.log(forecast.value); // Log the forecast data for debugging
   } catch (err) {
     error.value = err.message;
   } finally {
@@ -108,7 +108,7 @@ const fetchGps = () => {
       (position) => {
         const { latitude, longitude } = position.coords;
         fetchWeatherByCoords(latitude, longitude, 7);
-        console.log(latitude, longitude);
+        //console.log(latitude, longitude);
       },
       (error) => {
         console.log(Error("Failed to get location: " + error.message));
