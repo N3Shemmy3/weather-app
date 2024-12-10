@@ -36,22 +36,30 @@ const toggleMode = () => {
 
       <!--Items end-->
       <div>
-        <IconButton
-          size="24"
-          icon="ic:outline-search"
-          @click="$emit('onSearchItemClick')"
-        />
-        <IconButton
-          size="24"
-          icon="ic:outline-gps-fixed"
-          @click="$emit('onGPSItemClick')"
-        />
-        <IconButton
-          size="24"
-          :icon="isDarkMode ? 'ic:outline-dark-mode' : 'ic:outline-light-mode'"
-          @click="toggleMode"
-          class="theme-toggle-button"
-        />
+        <Tooltip text="Search">
+          <IconButton
+            size="24"
+            icon="ic:outline-search"
+            @click="$emit('onSearchItemClick')"
+          />
+        </Tooltip>
+        <Tooltip text="Use Location">
+          <IconButton
+            size="24"
+            icon="ic:outline-gps-fixed"
+            @click="$emit('onGPSItemClick')"
+          />
+        </Tooltip>
+        <Tooltip text="Change Theme">
+          <IconButton
+            size="24"
+            :icon="
+              isDarkMode ? 'ic:outline-dark-mode' : 'ic:outline-light-mode'
+            "
+            @click="toggleMode"
+            class="theme-toggle-button"
+          />
+        </Tooltip>
       </div>
     </div>
   </header>

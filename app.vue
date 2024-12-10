@@ -11,8 +11,6 @@ useSeoMeta({
 const searchQuery = ref(""); // User input
 const forecast = ref({}); // Forecast data
 const error = ref();
-const dailyForecastData = ref();
-const hourlyForecastData = ref();
 const citySuggestions = ref([]); // City suggestions
 const isLoading = ref(false); // Loading state
 const showSearchDialog = ref(false);
@@ -56,6 +54,7 @@ const fetchCityWeather = async (city, days = 7) => {
 
     if (response.ok) {
       forecast.value = data; // Assign the parsed data
+      console.log(forecast.value);
     } else {
       throw new Error(data.message || "Failed to fetch weather data");
     }
@@ -145,7 +144,7 @@ onMounted(() => {
         <NowCard :forecast="forecast" />
 
         <!-- Week forecast section-->
-        <WeekForecastCard :days="forecast.forecastday" />
+        <WeekForecastCard :days="forecast?.forecast?.forecastday || []" />
       </div>
 
       <!--Destop right-->
@@ -166,6 +165,7 @@ onMounted(() => {
     </div>
     <!-- laoding screen -->
     <Loader v-if="isLoading" />
+    <Snackbar />
   </App>
 </template>
 <style>

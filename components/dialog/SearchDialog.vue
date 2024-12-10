@@ -39,7 +39,10 @@ const query = ref("");
           id="searchbox"
           class="w-full min-h-14 px-2 flex items-center text-base transition-all duration-300"
         >
-          <IconButton icon="ic:outline-search" class="opacity-80" />
+          <IconButton
+            icon="ic:outline-search"
+            class="opacity-80 hover:bg-transparent dark:bg-transparent hover:cursor-default"
+          />
 
           <input
             v-model="query"

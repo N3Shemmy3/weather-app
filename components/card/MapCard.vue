@@ -5,37 +5,36 @@ const props = defineProps({
 
 // Set the initial style based on the current color mode
 const runtimeConfig = useRuntimeConfig();
-const zoom = 8;
+const zoom = 12;
 const style = ref(
   `https://api.maptiler.com/maps/streets-v2/style.json?key=${runtimeConfig.public.maptilerapikey}`
 );
-onMounted(() => {
-  console.log(props.location);
-});
 </script>
 
 <template>
-  <section class="w-full h-fit p-4 space-y-4">
-    <h4 v-if="props.location" class="text-lg">Forecast Location</h4>
-    <SkeletonText v-else />
-    <div
-      v-if="props.location"
-      class="w-full h-[350px] min-h-36 rounded-md overflow-clip"
-    >
-      <MglMap
-        :map-style="style"
-        :center="[props.location.lat, props.location.lon]"
-        :zoom="zoom"
+  <ClientOnly>
+    <section class="w-full h-fit p-4 space-y-4">
+      <h4 v-if="props.location" class="text-lg">Forecast Location</h4>
+      <SkeletonText v-else />
+      <div
+        v-if="props.location"
+        class="w-full h-[350px] min-h-36 rounded-md overflow-clip"
       >
-        <MglNavigationControl />
-        <mgl-marker
-          :coordinates="[props.location.lat, props.location.lon]"
-          color="#cc0000"
-        />
-      </MglMap>
-    </div>
-    <SkeletonMapCard v-else />
-  </section>
+        <MglMap
+          :map-style="style"
+          :center="[props.location.lon, props.location.lat]"
+          :zoom="zoom"
+        >
+          <MglNavigationControl />
+          <mgl-marker
+            :coordinates="[props.location.lon, props.location.lat]"
+            color="#cc0000"
+          />
+        </MglMap>
+      </div>
+      <SkeletonMapCard v-else />
+    </section>
+  </ClientOnly>
 </template>
 
 <style lang="scss">
