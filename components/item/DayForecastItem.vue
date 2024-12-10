@@ -29,7 +29,7 @@ const props = defineProps({
     <!-- Date and Day -->
     <div>
       <h4 class="text-base">{{ format(new Date(day.date), "d MMM") }}</h4>
-      <p class="text-sm">{{ format(new Date(day.date), "EEEE") }}</p>
+      <p class="text-sm">{{ format(new Date(day.date), "EEE") }}</p>
     </div>
   </li>
 </template>

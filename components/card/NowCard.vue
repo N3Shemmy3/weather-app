@@ -2,7 +2,7 @@
 import { formatDate, getMeteoconIcon } from "~/classes/Utils";
 
 defineProps({
-  forecast: { default: Object },
+  forecast: { default: {} },
 });
 </script>
 <template>

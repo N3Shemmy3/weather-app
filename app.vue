@@ -1,5 +1,5 @@
 <script setup>
-import { formatWeatherSpecifics, getGeolocation } from "./classes/Utils";
+import { formatWeatherSpecifics } from "./classes/Utils";
 
 useSeoMeta({
   title: "N3Shemmy3-Weather",
@@ -10,8 +10,9 @@ useSeoMeta({
 
 const searchQuery = ref(""); // User input
 const forecast = ref({}); // Forecast data
-const weekForecast = ref([]); // week Forecast data
 const error = ref();
+const dailyForecastData = ref();
+const hourlyForecastData = ref();
 const citySuggestions = ref([]); // City suggestions
 const isLoading = ref(false); // Loading state
 const showSearchDialog = ref(false);
@@ -23,7 +24,6 @@ const fetchCitySuggestions = async () => {
     citySuggestions.value = [];
     return;
   }
-
   isSearching.value = true;
 
   // Clear the previous debounce timer if it exists
@@ -45,55 +45,64 @@ const fetchCitySuggestions = async () => {
 };
 
 // Fetch weather forecast
-const fetchCityWeather = async (city) => {
+const fetchCityWeather = async (city, days = 7) => {
+  // Default to 7 days
   if (!city) return;
+
   isLoading.value = true;
   try {
-    const response = await fetch(`/api/weather?city=${city}&days=7`);
-    forecast.value = await response.json();
-    console.log(forecast.value);
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
+    const response = await fetch(`/api/forecast?city=${city}`);
+    const data = await response.json();
+
+    if (response.ok) {
+      forecast.value = data; // Assign the parsed data
+    } else {
+      throw new Error(data.message || "Failed to fetch weather data");
+    }
+  } catch (err) {
+    error.value = err.message;
   } finally {
     isLoading.value = false;
-    fetchWeekWeather(forecast.value.forecast?.location?.name);
-    console.log(forecast.value.forecast.location);
   }
 };
-
-const fetchWeatherByGps = async () => {
+const fetchCityWeatherGps = async (lat, lon, days = 7) => {
+  isLoading.value = true;
   try {
-    // Get geolocation coordinates (latitude and longitude)
-    const { latitude, longitude } = await getGeolocation();
-
-    // Fetch weather data by coordinates
     const response = await fetch(
-      `/api/weather?lat=${latitude}&=${longitude}&days=7`
+      `/api/forecast?lat=${lat}&lon=${lon}&days=${days}`
     );
-    forecast.value = await response.json();
+    const data = await response.json();
 
-    console.log("Weather data: ", forecast.value);
-  } catch (error) {
-    console.error("Error fetching weather data: ", error.message);
-  }
-};
-const fetchWeekWeather = async (city) => {
-  if (!city) return;
-  isLoading.value = true;
-  try {
-    const response = await fetch(`/api/forecast?city=${city}&days=7`);
-    forecast.value = await response.json();
-    console.log(forecast.value);
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
+    if (response.ok) {
+      forecast.value = data; // Assign the parsed data
+    } else {
+      throw new Error(data.message || "Failed to fetch weather data");
+    }
+  } catch (err) {
+    error.value = err.message;
   } finally {
     isLoading.value = false;
-    fetchWeekWeather(forecast.value.forecast?.location?.name);
   }
 };
 
+const fetchGps = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchCityWeatherGps(latitude, longitude, 7);
+        console.log(latitude, longitude);
+      },
+      (error) => {
+        console.log(Error("Failed to get location: " + error.message));
+      }
+    );
+  } else {
+    console.log(Error("Geolocation is not supported by this browser."));
+  }
+};
 onMounted(() => {
-  fetchWeatherByGps();
+  fetchGps();
 });
 </script>
 
@@ -119,7 +128,10 @@ onMounted(() => {
       "
     />
     <!-- main app header -->
-    <Toolbar @onSearchItemClick="showSearchDialog = !showSearchDialog" />
+    <Toolbar
+      @onSearchItemClick="showSearchDialog = !showSearchDialog"
+      @onGPSItemClick="fetchGps"
+    />
 
     <!-- main app -->
     <div
@@ -130,21 +142,21 @@ onMounted(() => {
       <div id="todays-specifics" class="w-full md:w-[320px] space-y-4">
         <!--Now Card section-->
 
-        <NowCard :forecast="forecast.forecast" />
+        <NowCard :forecast="forecast" />
 
         <!-- Week forecast section-->
-        <WeekForecastCard :week="weekForecast" />
+        <WeekForecastCard :days="forecast.forecastday" />
       </div>
 
       <!--Destop right-->
       <div id="todays-highlights" class="w-full borders">
         <!-- Todays Specifics section-->
-        <TodaysSpecificsCard
-          :specifics="formatWeatherSpecifics(forecast.forecast)"
-        />
+        <TodaysSpecificsCard :specifics="formatWeatherSpecifics(forecast)" />
 
         <!-- Today's Forecast section-->
-        <TodaysForecastCard :hours="forecast?.hourlyForecast?.[0] || []" />
+        <TodaysForecastCard
+          :hours="forecast?.forecast?.forecastday?.[0]?.hour || []"
+        />
 
         <!-- Location map section-->
         <MapCard :location="forecast.location" />

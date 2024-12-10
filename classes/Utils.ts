@@ -114,21 +114,3 @@ export const formatWeatherSpecifics = (weather: any) => {
   // Filter out any details with undefined values and return the valid details
   return detailsMap.filter((item) => item.value !== undefined);
 };
-
-export const getGeolocation = () => {
-  return new Promise((resolve, reject) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          resolve({ latitude, longitude });
-        },
-        (error) => {
-          reject(new Error("Failed to get location: " + error.message));
-        }
-      );
-    } else {
-      reject(new Error("Geolocation is not supported by this browser."));
-    }
-  });
-};

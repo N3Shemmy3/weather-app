@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       weatherapikey: process.env.NUXT_WEATHERAPIKEY,
+      openweatherapikey: process.env.NUXT_OPENWEATHERAPIKEY,
       maptilerapikey: process.env.NUXT_MAPTILERKEY,
     },
   },

@@ -9,7 +9,7 @@ const scrollToTop = () => {
 const links = [
   {
     name: "ICU Zambia",
-    url: "http://www.icuzambia.net",
+    url: "https://www.icuzambia.net",
   },
   {
     name: "ZRDC",
@@ -47,7 +47,7 @@ const links = [
         </ul>
       </div>
 
-      <!-- Quick Links-->
+      <!-- info-->
       <div class="space-y-1">
         <ul>
           <li>Kanyama ward</li>

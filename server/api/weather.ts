@@ -1,73 +1,31 @@
 import { weatherApiBaseUrl, weatherEndPoints } from "~/classes/WeatherApi";
 import { getQuery } from "h3";
+import axios from "axios";
 
 const runtimeConfig = useRuntimeConfig();
 
 export default defineEventHandler(async (event) => {
-  // Extract query parameters
-  const { city, lat, lon, days = 7 } = getQuery(event);
-
-  // Utility to fetch weather forecast by city name
-  const fetchForecastByCity = async (
-    city: string,
-    days: number = 7
-  ): Promise<any> => {
-    const url = `${weatherApiBaseUrl}${weatherEndPoints.forecast}?key=${runtimeConfig.public.weatherapikey}&q=${city}&days=${days}&hourly=1`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(
-        `HTTP Error: ${response.status} - ${response.statusText}`
-      );
-    }
-    return response.json();
-  };
-
-  // Utility to fetch weather by coordinates
-  const fetchWeatherByCoords = async (
-    lat: number,
-    lon: number
-  ): Promise<any> => {
-    const url = `${weatherApiBaseUrl}${weatherEndPoints.current}?key=${runtimeConfig.public.weatherapikey}&q=${lat},${lon}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(
-        `HTTP Error: ${response.status} - ${response.statusText}`
-      );
-    }
-    return response.json();
-  };
+  const query = getQuery(event);
+  const location = query.location || "Lusaka"; // Default to 'London' if no location is provided
+  const apikey = runtimeConfig.public.weatherapikey;
+  const baseUrl = weatherApiBaseUrl;
 
   try {
-    if (city) {
-      // Fetch forecast data by city (including hourly forecast)
-      const forecastData = await fetchForecastByCity(
-        city as string,
-        Number(days) || 7
-      );
+    const response = await axios.get(`${baseUrl}${weatherEndPoints.forecast}`, {
+      params: {
+        key: apikey,
+        q: location,
+        days: 7, // Number of days to fetch the forecast for
+      },
+    });
 
-      // Extract hourly forecast if available
-      const hourlyForecast = forecastData?.forecast?.forecastday?.map(
-        (day: any) => {
-          return day.hour; // Return the hourly data for each day
-        }
-      );
-
-      // Return the forecast data along with the hourly forecast
-      return { forecast: forecastData, hourlyForecast };
-    } else if (lat && lon) {
-      // Fetch weather data by coordinates (current weather, not hourly)
-      const currentWeather = await fetchWeatherByCoords(
-        Number(lat),
-        Number(lon)
-      );
-      return { currentWeather };
-    } else {
-      throw new Error(
-        "Either 'city' or 'lat' and 'lon' parameters are required."
-      );
-    }
+    // Return the forecast data
+    return response.data;
   } catch (error) {
-    // Return error message
-    return { error: error.message || "An unknown error occurred." };
+    console.error("Error fetching weather forecast:", error);
+    throw createError({
+      statusCode: error.response?.status || 500,
+      message: "Failed to fetch weather forecast",
+    });
   }
 });

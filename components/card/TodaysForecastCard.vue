@@ -12,8 +12,8 @@ defineProps({
     <SkeletonText v-else />
     <ul class="w-full grid grid-responsive gap-4">
       <HourForecastItem
-        v-if="hours[0]"
-        v-for="hour in hours"
+        v-if="hours"
+        v-for="hour in hours.slice(0, 12)"
         :key="hour.time"
         :hour="hour"
       />

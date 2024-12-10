@@ -1,5 +1,5 @@
 <script setup>
-defineEmits(["onSearchItemClick"]);
+defineEmits(["onSearchItemClick", "onGPSItemClick"]);
 const colorMode = useColorMode();
 const isDarkMode = ref(colorMode.value === "dark");
 
@@ -41,7 +41,11 @@ const toggleMode = () => {
           icon="ic:outline-search"
           @click="$emit('onSearchItemClick')"
         />
-        <IconButton size="24" icon="ic:outline-gps-fixed" />
+        <IconButton
+          size="24"
+          icon="ic:outline-gps-fixed"
+          @click="$emit('onGPSItemClick')"
+        />
         <IconButton
           size="24"
           :icon="isDarkMode ? 'ic:outline-dark-mode' : 'ic:outline-light-mode'"
