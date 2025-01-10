@@ -5,17 +5,6 @@ const scrollToTop = () => {
     behavior: "smooth", // Smooth scroll effect
   });
 };
-
-const links = [
-  {
-    name: "ICU Zambia",
-    url: "https://www.icuzambia.net",
-  },
-  {
-    name: "ZRDC",
-    url: "https://www.zrdc.org",
-  },
-];
 </script>
 
 <template>
@@ -31,28 +20,11 @@ const links = [
         <Icon name="meteocons:dust-day" size="32" />
         <span>N3Shemmy3</span>
       </NuxtLink>
-
-      <!-- Quick Links-->
-      <div class="space-y-1">
-        <h4>Quick Links</h4>
-        <ul class="flex flex-col gap-1">
-          <li
-            v-for="link in links"
-            :key="link.url"
-            class="flex items-center space-x-2 transition cursor-pointer hover:text-colorPrimaryLight dark:hover:text-colorPrimaryDark"
-          >
-            <Icon name="ic:outline-launch" size="20" />
-            <NuxtLink :href="link.url">{{ link.name }}</NuxtLink>
-          </li>
-        </ul>
-      </div>
-
       <!-- info-->
-      <div class="space-y-1">
+      <div class="space-y-2">
         <ul>
-          <li>Kanyama ward</li>
           <li>All Rights Reserved. Designed and Maintained By</li>
-          <li>Shem Nyirenda, 2308822137</li>
+          <li>Shemmy Nyirenda</li>
         </ul>
       </div>
     </footer>
