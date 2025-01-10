@@ -23,8 +23,7 @@ const scrollToTop = () => {
       <!-- info-->
       <div class="space-y-2">
         <ul>
-          <li>All Rights Reserved. Designed and Maintained By</li>
-          <li>Shemmy Nyirenda</li>
+          <li>© Shemmy Nyirenda</li>
         </ul>
       </div>
     </footer>
